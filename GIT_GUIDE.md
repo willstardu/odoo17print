@@ -92,7 +92,35 @@ git push -u origin main
 
 ---
 
-## 3. Common Git Issues (常见 Git 问题)
+## 3. Routine Updates (日常更新/同步)
+
+When you have created new files or modified existing ones, follow these 3 steps to sync them to GitHub:
+当您创建了新文件或修改了现有文件后，请执行以下 3 步将其同步到 GitHub：
+
+### Step 1: Add Changes (添加更改)
+Stage all new and modified files.
+暂存所有新建和修改的文件。
+```bash
+git add .
+```
+
+### Step 2: Commit Changes (提交更改)
+Save the changes to your local history with a descriptive message.
+将更改保存到本地历史记录，并附上描述信息。
+```bash
+git commit -m "Update: Added new features or fixed bugs"
+```
+
+### Step 3: Push to GitHub (推送到 GitHub)
+Upload your commits to the remote repository.
+将提交上传到远程仓库。
+```bash
+git push
+```
+
+---
+
+## 4. Common Git Issues (常见 Git 问题)
 
 *   **Error: `Author identity unknown`**
     *   Solution: Run the commands in **Step 0** to set your email and name, then run `git commit --amend --reset-author` to fix the previous commit.
@@ -108,7 +136,7 @@ git push -u origin main
 
 ---
 
-## 4. Advanced: GitLab CI/CD Integration (进阶：与 GitLab CI/CD 配合)
+## 5. Advanced: GitLab CI/CD Integration (进阶：与 GitLab CI/CD 配合)
 
 If you are using GitLab in your company, you can automate tests with **"Push to Test"**.
 如果你在公司内部使用 GitLab，可以实现**“代码一推，测试自跑”**。
