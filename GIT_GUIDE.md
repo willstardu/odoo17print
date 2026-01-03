@@ -120,54 +120,67 @@ git push
 
 ---
 
-## 4. Common Git Issues (常见 Git 问题)
+## 4. Troubleshooting (疑难解答)
 
-*   **Error: `Author identity unknown`**
-    *   Solution: Run the commands in **Step 0** to set your email and name, then run `git commit --amend --reset-author` to fix the previous commit.
-    *   解决：运行 **Step 0** 中的命令配置邮箱和名字，然后运行 `git commit --amend --reset-author` 修正上一次提交。
+### 4.1 Confirming Updates (确认更新是否成功)
+If you pushed but don't see the files on GitHub, check the following:
+如果你执行了 Push 但没在 GitHub 看到新文件，请检查以下几点：
 
-*   **Error: `remote origin already exists`**
-    *   Solution: `git remote remove origin` then try Step 5 again.
-    *   解决：先移除旧关联，再重新添加。
+**Check Status (检查状态):**
+Run `git status`.
+*   `Untracked files`: You forgot `git add .`. (忘了添加)
+*   `Changes to be committed`: You forgot `git commit`. (忘了提交)
+*   `nothing to commit, working tree clean`: Local is clean. (本地已处理好)
 
-*   **Authentication Failed**
-    *   Solution: Ensure you are using a Personal Access Token (PAT) if password authentication is disabled, or use SSH keys.
-    *   解决：确保使用个人访问令牌 (PAT) 或 SSH 密钥进行认证。
+**Check Branch (检查分支):**
+Run `git branch`.
+*   Ensure the branch with `*` is the same one you are viewing on GitHub (usually `main`).
+*   确保带 `*` 的分支和你 GitHub 网页上查看的分支一致。
+
+### 4.2 Force Sync (强制同步三部曲)
+If unsure, run these 3 commands in order to force a sync:
+如果不确定哪步漏了，请直接按顺序执行这三行：
+
+```bash
+# 1. Add all changes (强制将所有改动加入暂存区)
+git add .
+
+# 2. Commit (再次提交，如果有改动的话)
+git commit -m "Force update: Ensure everything is synced"
+
+# 3. Push to main (确保推送到 main 分支)
+git push origin main
+```
+
+**Understanding Output (读懂输出):**
+*   `Your branch is ahead of 'origin/main' by 1 commit`: You have local changes waiting to be pushed. (本地有存档未发车)
+*   `Enumerating objects... done`: Push successful. (推送成功)
+*   `Everything up-to-date`: No new changes to push. (没有新改动)
+
+### 4.3 Security Warning (安全警告)
+If you see `TLS certificate verification has been disabled!`:
+*   **Reason**: `git config --global http.sslVerify false` was likely used to bypass network issues.
+*   **Risk**: Traffic is unencrypted and vulnerable to interception.
+*   **Fix**: Ideally, enable verification: `git config --global http.sslVerify true`.
+*   **原因**：可能为了解决网络问题关闭了 SSL 验证。
+*   **风险**：流量未加密，存在被截获风险。
+*   **建议**：在安全网络环境下，建议重新开启验证：`git config --global http.sslVerify true`。
 
 ---
 
-## 5. Advanced: GitLab CI/CD Integration (进阶：与 GitLab CI/CD 配合)
+## 5. CI/CD Integration (自动化集成)
 
-If you are using GitLab in your company, you can automate tests with **"Push to Test"**.
-如果你在公司内部使用 GitLab，可以实现**“代码一推，测试自跑”**。
+### 5.1 GitHub Actions (Recommended)
+We have automatically created a CI workflow for GitHub Actions at `.github/workflows/ci.yml`.
+我们已在 `.github/workflows/ci.yml` 创建了 GitHub Actions 工作流。
 
-Create a `.gitlab-ci.yml` file in the project root with the following content:
-在项目根目录创建一个 `.gitlab-ci.yml` 文件，内容如下：
+It will run tests automatically when you push to `main` or create a Pull Request.
+当您推送到 `main` 分支或创建 PR 时，它会自动运行测试。
 
-```yaml
-stages:
-  - test
+**Key Features (主要功能):**
+*   **Odoo Test**: Installs requirements and runs Odoo unit tests (if `odoo-bin` exists).
+*   **Electron Test**: Installs Node.js dependencies and prepares for testing.
 
-# Test Odoo Module (测试 Odoo 模块)
-test_odoo_module:
-  stage: test
-  image: python:3.10
-  script:
-    - pip install -r requirements.txt
-    # Assuming standard Odoo test execution
-    # 假设标准的 Odoo 测试执行方式
-    - python3 odoo-bin --test-enable --stop-after-init -d test_db -i odoo_printer_service
-
-# Test Electron Service (测试 Electron 服务)
-test_electron_service:
-  stage: test
-  image: node:lts
-  script:
-    - cd ElectronPrinterService
-    - npm install
-    # Run linter or unit tests if available
-    # 运行代码检查或单元测试
-    # - npm test
-```
-*Note: This is a basic example. You may need to adjust the Docker image and scripts based on your actual CI environment.*
-*注意：这是一个基础示例。您可能需要根据实际的 CI 环境调整 Docker 镜像和脚本。*
+### 5.2 GitLab CI/CD (Legacy)
+If you use GitLab, a `.gitlab-ci.yml` is also provided in the root directory.
+如果您使用 GitLab，根目录下也提供了 `.gitlab-ci.yml` 文件。
