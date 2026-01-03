@@ -1,0 +1,21 @@
+# Python / Odoo
+*.pyc
+__pycache__/
+*.log
+/data/
+/odoo.conf
+
+# Node.js / Electron
+node_modules/
+dist/
+dist_v2/
+ElectronPrinterService/dist/
+ElectronPrinterService/dist_v2/
+ElectronPrinterService/node_modules/
+.npmrc
+
+# IDE / Editor
+.vscode/
+.trae/
+.idea/
+*.swp

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_printer_server,printer.server,model_printer_server,base.group_user,1,1,1,1
+access_printer_server_printer,printer.server.printer,model_printer_server_printer,base.group_user,1,1,1,1
+access_print_to_server_wizard,print.to.server.wizard,model_print_to_server_wizard,base.group_user,1,1,1,1
