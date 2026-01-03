@@ -184,3 +184,30 @@ It will run tests automatically when you push to `main` or create a Pull Request
 ### 5.2 GitLab CI/CD (Legacy)
 If you use GitLab, a `.gitlab-ci.yml` is also provided in the root directory.
 如果您使用 GitLab，根目录下也提供了 `.gitlab-ci.yml` 文件。
+
+---
+
+## 6. What Next? & Recovery (下一步与恢复)
+
+### CI/CD in Action (CI/CD 实战)
+Since your files are on GitHub, you can try the following to test your pipeline:
+既然文件上去了，你可以尝试以下操作来测试你的流水线：
+
+**Use GitHub Actions (Recommended):**
+Ask Trae: "Since I've pushed to GitHub, please help me create a ci.yml in .github/workflows/ migrating logic from .gitlab-ci.yml."
+**如果你想用 GitHub Actions (推荐)：**
+让 Trae 帮你：“既然我已经把代码传到了 GitHub，请帮我在 .github/workflows/ 下创建一个 ci.yml，把 .gitlab-ci.yml 里的测试逻辑迁移过去。”
+
+### Recovering from AI Overwrites (手动检查代码冲突/恢复)
+Now you can safely let Trae modify code. If it "overwrites" your changes unexpectedly, run:
+现在你可以放心地让 Trae 修改代码了。如果它又“冲掉”了你的代码，终端输入：
+
+```bash
+# Restore a single file (恢复单个文件)
+git checkout GIT_GUIDE.md
+
+# OR / 或者
+
+# Discard all uncommitted changes (放弃所有未提交的修改，回到最初状态)
+git reset --hard HEAD
+```
