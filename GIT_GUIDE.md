@@ -92,37 +92,78 @@ git push -u origin main
 
 ---
 
-## 3. Routine Updates (日常更新/同步)
+## 3. Routine Updates: The Standard Trilogy (日常更新：标准更新三步曲)
 
-When you have created new files or modified existing ones, follow these 3 steps to sync them to GitHub:
-当您创建了新文件或修改了现有文件后，请执行以下 3 步将其同步到 GitHub：
+Whenever you finish a feature or fix a bug, follow these 3 steps in order:
+每当你完成了一个小功能或修复了一个 Bug，请依次执行：
 
-### Step 1: Add Changes (添加更改)
-Stage all new and modified files.
-暂存所有新建和修改的文件。
+### Step 1: Add (装箱)
+Tell Git which file changes to include.
+告诉 Git 哪些文件变动要包含进去。
 ```bash
 git add .
+# . represents all changes in current directory
+# . 代表当前目录下所有变动，你也可以指定单个文件 git add main.js
 ```
 
-### Step 2: Commit Changes (提交更改)
-Save the changes to your local history with a descriptive message.
-将更改保存到本地历史记录，并附上描述信息。
+### Step 2: Commit (封箱)
+Label this update and record what you did.
+给这次更新贴上标签，记录你做了什么。
 ```bash
-git commit -m "Update: Added new features or fixed bugs"
+git commit -m "Fixed printer connection timeout bug"
+# "修复了打印机连接超时的Bug"
 ```
+*`-m` follows your description, which is very important for future reference. (`-m` 后面是你的说明，非常重要，方便以后翻旧账)*
 
-### Step 3: Push to GitHub (推送到 GitHub)
-Upload your commits to the remote repository.
-将提交上传到远程仓库。
+### Step 3: Push (发货)
+Push local records to the GitHub server.
+把本地的记录推送到 GitHub 服务器。
 ```bash
 git push
 ```
 
+### FAQ: Why can't I just use `git push`? (为什么不能只用 git push？)
+If you run `git push` directly:
+如果你直接运行 `git push`：
+
+1.  **No Commit**: Git will say `Everything up-to-date` because the local repository hasn't recorded your new code yet.
+    *   如果你没有执行 commit，Git 会提示 `Everything up-to-date`（因为本地仓库还没记录下你的新代码）。
+2.  **Already Committed**: `git push` will send all your "sealed but not shipped" boxes to GitHub at once.
+    *   如果你已经执行过 commit，那么 `git push` 会把你本地所有“封好了但还没发走”的箱子全部一次性发往 GitHub。
+
+### Shortcuts (快捷小技巧)
+If you find three lines too troublesome, use a compound command in the Trae terminal:
+如果你嫌三行命令太麻烦，可以在 Trae 终端使用复合命令（一行搞定）：
+
+**Windows (PowerShell):**
+```powershell
+git add .; git commit -m "Quick update"; git push
+```
+
+**Mac/Linux/Bash:**
+```bash
+git add . && git commit -m "Quick update" && git push
+```
+
 ---
 
-## 4. Troubleshooting (疑难解答)
+## 4. Expert Workflow for Trae Users (专家建议：避坑工作流)
 
-### 4.1 Confirming Updates (确认更新是否成功)
+Since you are using Trae (where AI modifies code extensively), it is recommended to develop the habit of "Pull -> Write -> Push" to prevent code conflicts.
+因为你在使用 Trae（AI 会大面积修改代码），建议养成 “先拉、再写、后推” 的习惯，防止代码冲突：
+
+| Step | Command (命令) | Action Description (动作描述) |
+| :--- | :--- | :--- |
+| **1. 拿货** | `git pull` | Before starting, pull the latest code from GitHub. <br> 开始写代码前，先从 GitHub 拉取最新的代码（防止别人改了或者你在另一台电脑改了）。 |
+| **2. 干活** | *(Trae Coding)* | Let Trae help you add features. <br> 让 Trae 帮你增加功能。 |
+| **3. 存档** | `git commit -am "desc"` | Once done, use `-am` to add and commit tracked files directly. <br> 完成后，直接用 `-am` 合并 add 和 commit（仅限已追踪的文件）。 |
+| **4. 发货** | `git push` | Sync to the cloud. <br> 同步到云端。 |
+
+---
+
+## 5. Troubleshooting (疑难解答)
+
+### 5.1 Confirming Updates (确认更新是否成功)
 If you pushed but don't see the files on GitHub, check the following:
 如果你执行了 Push 但没在 GitHub 看到新文件，请检查以下几点：
 
@@ -137,7 +178,7 @@ Run `git branch`.
 *   Ensure the branch with `*` is the same one you are viewing on GitHub (usually `main`).
 *   确保带 `*` 的分支和你 GitHub 网页上查看的分支一致。
 
-### 4.2 Force Sync (强制同步三部曲)
+### 5.2 Force Sync (强制同步三部曲)
 If unsure, run these 3 commands in order to force a sync:
 如果不确定哪步漏了，请直接按顺序执行这三行：
 
@@ -157,7 +198,7 @@ git push origin main
 *   `Enumerating objects... done`: Push successful. (推送成功)
 *   `Everything up-to-date`: No new changes to push. (没有新改动)
 
-### 4.3 Security Warning (安全警告)
+### 5.3 Security Warning (安全警告)
 If you see `TLS certificate verification has been disabled!`:
 *   **Reason**: `git config --global http.sslVerify false` was likely used to bypass network issues.
 *   **Risk**: Traffic is unencrypted and vulnerable to interception.
@@ -168,9 +209,9 @@ If you see `TLS certificate verification has been disabled!`:
 
 ---
 
-## 5. CI/CD Integration (自动化集成)
+## 6. CI/CD Integration (自动化集成)
 
-### 5.1 GitHub Actions (Recommended)
+### 6.1 GitHub Actions (Recommended)
 We have automatically created a CI workflow for GitHub Actions at `.github/workflows/ci.yml`.
 我们已在 `.github/workflows/ci.yml` 创建了 GitHub Actions 工作流。
 
@@ -181,13 +222,13 @@ It will run tests automatically when you push to `main` or create a Pull Request
 *   **Odoo Test**: Installs requirements and runs Odoo unit tests (if `odoo-bin` exists).
 *   **Electron Test**: Installs Node.js dependencies and prepares for testing.
 
-### 5.2 GitLab CI/CD (Legacy)
+### 6.2 GitLab CI/CD (Legacy)
 If you use GitLab, a `.gitlab-ci.yml` is also provided in the root directory.
 如果您使用 GitLab，根目录下也提供了 `.gitlab-ci.yml` 文件。
 
 ---
 
-## 6. What Next? & Recovery (下一步与恢复)
+## 7. What Next? & Recovery (下一步与恢复)
 
 ### CI/CD in Action (CI/CD 实战)
 Since your files are on GitHub, you can try the following to test your pipeline:
