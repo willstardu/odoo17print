@@ -1,0 +1,23 @@
+stages:
+  - test
+
+# Test Odoo Module (测试 Odoo 模块)
+test_odoo_module:
+  stage: test
+  image: python:3.10
+  script:
+    - pip install -r requirements.txt
+    # Assuming standard Odoo test execution
+    # 假设标准的 Odoo 测试执行方式
+    - python3 odoo-bin --test-enable --stop-after-init -d test_db -i odoo_printer_service
+
+# Test Electron Service (测试 Electron 服务)
+test_electron_service:
+  stage: test
+  image: node:lts
+  script:
+    - cd ElectronPrinterService
+    - npm install
+    # Run linter or unit tests if available
+    # 运行代码检查或单元测试
+    # - npm test
